@@ -25,6 +25,8 @@ const Home: NextPage = () => {
       let jsonObj = JSON.parse(result);
       setResult(jsonObj?.translation);
     } catch (error) {
+      setIsLoading(false);
+      alert("error");
       console.log("Error:", error);
     }
   };
