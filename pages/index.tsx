@@ -18,7 +18,7 @@ const Home: NextPage = () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `http://3.239.239.251/translate?text=${text}&target_lang=${lang}`
+        `https://api-translate.ss.ge/translate?text=${text}&target_lang=${lang}`
       );
       const result = await response.text();
       setIsLoading(false);
