@@ -65,6 +65,7 @@ const Home: NextPage = () => {
             onChange={(e) => {
               setText(e.target?.value);
             }}
+            placeholder="Enter Text"
             className="my-textarea"
           />
           <select className="my-selector" value={lang} onChange={handleChange}>
