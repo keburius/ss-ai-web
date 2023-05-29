@@ -3,6 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { useState } from "react";
+import axios from "axios";
 
 const Home: NextPage = () => {
   const [text, setText] = useState("");
@@ -15,15 +16,27 @@ const Home: NextPage = () => {
   };
 
   const translateHandler = async () => {
+    if (!text?.length) return;
     setIsLoading(true);
     try {
-      const response = await fetch(
-        `https://api-translate.ss.ge/translate?text=${text}&target_lang=${lang}`
-      );
-      const result = await response.text();
+      let data = {
+        text: text,
+        target_lang: lang,
+      };
+
+      let config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: "https://api-translate.ss.ge/translate",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
+
+      const response = await axios.request(config);
       setIsLoading(false);
-      let jsonObj = JSON.parse(result);
-      setResult(jsonObj?.translation);
+      setResult(response.data?.translation);
     } catch (error) {
       setIsLoading(false);
       alert("error");
