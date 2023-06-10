@@ -28,8 +28,9 @@ const Home: NextPage = () => {
       let config = {
         method: "post",
         maxBodyLength: Infinity,
-        url: "https://api-translate.ss.ge/translate",
+        url: "http://127.0.0.1:5000/translate",
         headers: {
+          Authorization: "Bearer 1f77fffad867618cf7357efc1dbe9456",
           "Content-Type": "application/json",
         },
         data: data,
