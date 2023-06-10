@@ -7,6 +7,7 @@ import axios from "axios";
 
 const Home: NextPage = () => {
   const [text, setText] = useState("");
+  const [confidence, setConfidence] = useState();
   const [result, setResult] = useState("");
   const [lang, setLang] = useState("DescriptionEn");
   const [isLoading, setIsLoading] = useState(false);
@@ -37,6 +38,7 @@ const Home: NextPage = () => {
       const response = await axios.request(config);
       setIsLoading(false);
       setResult(response.data?.translation);
+      setConfidence(response.data?.confidence?.toFixed(2));
     } catch (error) {
       setIsLoading(false);
       alert("error");
@@ -70,7 +72,7 @@ const Home: NextPage = () => {
         ) : (
           <></>
         )}
-        <h1 className={"title"}>
+        <h1 className={"title"} style={{ color: "white" }}>
           Welcome to{" "}
           <a className={"title-span"} href="https://nextjs.org">
             SS-AI
@@ -86,11 +88,56 @@ const Home: NextPage = () => {
             placeholder="Enter Text"
             className="my-textarea"
           />
-          <select className="my-selector" value={lang} onChange={handleChange}>
-            <option value="DescriptionEn">English</option>
-            <option value="DescriptionRu">Русский</option>
-            <option value="DescriptionGe">ქართული</option>
-          </select>
+          <div
+            style={{
+              marginTop: 30,
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 20,
+            }}
+          >
+            <select
+              className="my-selector"
+              value={lang}
+              onChange={handleChange}
+            >
+              <option value="DescriptionEn">English</option>
+              <option value="DescriptionRu">Русский</option>
+              <option value="DescriptionGe">ქართული</option>
+            </select>
+            {confidence ? (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  height: "100%",
+                  background: "#58585845",
+                  width: "fit-content",
+                  borderRadius: 10,
+                  padding: "10px 0 10px 10px",
+                  overflow: "hidden",
+                }}
+              >
+                <p style={{ margin: 0, color: "white" }}>
+                  Confidence:{" "}
+                  <span
+                    style={{
+                      color: "white",
+                      background: "#0070f3c7",
+                      padding: 10,
+                      marginLeft: 10,
+                    }}
+                  >
+                    {confidence}
+                  </span>
+                </p>
+              </div>
+            ) : (
+              <></>
+            )}
+          </div>
           <button
             className="my-button"
             type="button"
@@ -105,16 +152,6 @@ const Home: NextPage = () => {
           </p>
         </div>
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by <span className={styles.logo}>Lemondo</span>
-        </a>
-      </footer>
     </div>
   );
 };
