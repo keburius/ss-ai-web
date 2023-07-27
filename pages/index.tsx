@@ -10,6 +10,7 @@ const Home: NextPage = () => {
   const [confidence, setConfidence] = useState();
   const [result, setResult] = useState("");
   const [lang, setLang] = useState("DescriptionEn");
+  const [version, setVersion] = useState("new");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (event: any) => {
@@ -28,7 +29,9 @@ const Home: NextPage = () => {
       let config = {
         method: "post",
         maxBodyLength: Infinity,
-        url: "https://api-translate.ss.ge/translate",
+        url: `https://api-translate${
+          version === "old" ? "" : "-test"
+        }.ss.ge/translate`,
         headers: {
           Authorization: "Bearer 1f77fffad867618cf7357efc1dbe9456",
           "Content-Type": "application/json",
@@ -108,37 +111,16 @@ const Home: NextPage = () => {
               <option value="DescriptionRu">Русский</option>
               <option value="DescriptionGe">ქართული</option>
             </select>
-            {confidence ? (
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  height: "100%",
-                  background: "#58585845",
-                  width: "fit-content",
-                  borderRadius: 10,
-                  padding: "10px 0 10px 10px",
-                  overflow: "hidden",
-                }}
-              >
-                <p style={{ margin: 0, color: "white" }}>
-                  Confidence:{" "}
-                  <span
-                    style={{
-                      color: "white",
-                      background: "#0070f3c7",
-                      padding: 10,
-                      marginLeft: 10,
-                    }}
-                  >
-                    {confidence}
-                  </span>
-                </p>
-              </div>
-            ) : (
-              <></>
-            )}
+            <select
+              className="my-selector"
+              value={version}
+              onChange={(e) => setVersion(e.target.value)}
+            >
+              <option value="old">ძველი</option>
+              <option value="new">ახალი</option>
+            </select>
           </div>
+
           <button
             className="my-button"
             type="button"
