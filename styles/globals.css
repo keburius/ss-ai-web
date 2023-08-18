@@ -190,3 +190,72 @@ a {
     font-size: 2rem;
   }
 }
+.similar-input {
+  width: 100%;
+  background: #58585845;
+  border: none;
+  border-radius: 8px;
+  height: 30px;
+  outline: none;
+  padding: 10px;
+  color: white;
+  height: 50px;
+}
+.similar-inputs-div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.similar-div {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+}
+.similar-img {
+  width: 48%;
+  border-radius: 8px;
+  height: 100%;
+}
+
+.similar-result {
+  background: #58585845;
+  margin-top: 20px;
+  border-radius: 20px;
+  padding: 20px;
+  width: 700px;
+  min-height: 300px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.similar-result-img {
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  gap: 20px;
+}
+.similar-results {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: white;
+  gap: 10px;
+}
+.similar-text {
+  padding: 0;
+  margin: 0;
+}
+img {
+  display: inline-block;
+  background: transparent;
+}
+img:not([src]),
+img[src=""],
+img[width="16"][height="16"], /* Only if you know the default broken image size */
+img[width="0"][height="0"] {
+  display: none;
+}
