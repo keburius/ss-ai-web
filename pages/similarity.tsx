@@ -12,26 +12,28 @@ import {
   Slider,
   Switch,
 } from "@mui/material";
+import { motion } from "framer-motion";
+import useIsMobile from "../hooks/useIsMobile";
 
 const Similarity: NextPage = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const isMobile = useIsMobile(1023);
 
   const [imgUrl, setImgUrl] = useState("");
   const [imgId, setImgId] = useState<number>();
   const [score, setScore] = useState<number>(90);
   const [onlySearch, setOnlySearch] = useState(true);
+  const [isNew, setIsNew] = useState(true);
   const [limit, setLimit] = useState<number>();
 
   const [similarImages, setSimilarImages] = useState<any>([]);
 
   const translateHandler = async () => {
-    if (!imgUrl?.length || !!!imgId) return;
+    if (!imgUrl?.length || !limit) return;
     setIsLoading(true);
     try {
       let data = JSON.stringify({
-        img_id: imgId,
         img_path: imgUrl,
-        only_search: onlySearch,
         limit: limit,
         minimal_score: score / 100,
       });
@@ -39,7 +41,7 @@ const Similarity: NextPage = () => {
       let config = {
         method: "post",
         maxBodyLength: Infinity,
-        url: "https://similarity-api.ss.ge/search",
+        url: `https://similarity-api.ss.ge/search${isNew ? "" : "_old"}`,
         headers: {
           "Content-Type": "application/json",
         },
@@ -104,7 +106,7 @@ const Similarity: NextPage = () => {
           >
             <div
               style={{
-                width: "500px",
+                width: isMobile ? "auto" : "500px",
                 flexDirection: "column",
                 display: "flex",
                 gap: "20px",
@@ -119,13 +121,13 @@ const Similarity: NextPage = () => {
                 </a>
               </h1>
               <div className="similar-inputs-div">
-                <input
+                {/* <input
                   type="number"
                   className="similar-input"
                   placeholder="Image ID"
                   onChange={(e) => setImgId(parseInt(e.target.value))}
                   value={imgId}
-                />
+                /> */}
                 <input
                   type="text"
                   className="similar-input"
@@ -142,7 +144,7 @@ const Similarity: NextPage = () => {
                 />
               </div>
 
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={
                   <Switch
                     checked={onlySearch}
@@ -151,6 +153,19 @@ const Similarity: NextPage = () => {
                   />
                 }
                 label="Only Search"
+                style={{
+                  marginTop: "20px",
+                }}
+              /> */}
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={isNew}
+                    onChange={() => setIsNew(!isNew)}
+                    name="gilad"
+                  />
+                }
+                label="New Method"
                 style={{
                   marginTop: "20px",
                 }}
@@ -182,25 +197,38 @@ const Similarity: NextPage = () => {
                 Search
               </Button>
             </div>
+            <motion.img
+              animate={{
+                width: imgUrl?.length ? (isMobile ? "100%" : 250) : 0,
+              }}
+              style={{
+                marginTop: 50,
+                borderRadius: 20,
+              }}
+              src={imgUrl}
+              alt=""
+            />
           </div>
 
-          <ImageList sx={{ width: "50%", height: "100%" }}>
-            {similarImages.map((img: any) => (
-              <ImageListItem sx={{ width: "100%", height: 400 }} key={img.id}>
-                <img
-                  srcSet={`${img.payload.img_path}?w=248&fit=crop&auto=format&dpr=3 1x`}
-                  src={`${img.payload.img_path}?w=248&fit=crop&auto=format`}
-                  alt={img.payload.img_path}
-                  loading="eager"
-                />
-                <ImageListItemBar
-                  style={{ color: "white" }}
-                  title={img.score}
-                  position="below"
-                />
-              </ImageListItem>
-            ))}
-          </ImageList>
+          {!isMobile && (
+            <ImageList sx={{ width: "50%", height: "100%" }}>
+              {similarImages.map((img: any) => (
+                <ImageListItem sx={{ width: "100%", height: 400 }} key={img.id}>
+                  <img
+                    srcSet={`${img.payload.img_path}?w=248&fit=crop&auto=format&dpr=3 1x`}
+                    src={`${img.payload.img_path}?w=248&fit=crop&auto=format`}
+                    alt={img.payload.img_path}
+                    loading="eager"
+                  />
+                  <ImageListItemBar
+                    style={{ color: "white" }}
+                    title={img.score}
+                    position="below"
+                  />
+                </ImageListItem>
+              ))}
+            </ImageList>
+          )}
         </div>
       </main>
     </div>
