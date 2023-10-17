@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { motion } from "framer-motion";
 import useIsMobile from "../hooks/useIsMobile";
+import Link from "next/link";
 
 const Similarity: NextPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -41,7 +42,7 @@ const Similarity: NextPage = () => {
       let config = {
         method: "post",
         maxBodyLength: Infinity,
-        url: `https://similarity-api.ss.ge/search${isNew ? "" : "_old"}`,
+        url: `https://similarity-api.ss.ge/search`,
         headers: {
           "Content-Type": "application/json",
         },
@@ -157,19 +158,6 @@ const Similarity: NextPage = () => {
                   marginTop: "20px",
                 }}
               /> */}
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={isNew}
-                    onChange={() => setIsNew(!isNew)}
-                    name="gilad"
-                  />
-                }
-                label="New Method"
-                style={{
-                  marginTop: "20px",
-                }}
-              />
 
               <FormControlLabel
                 control={
@@ -214,12 +202,17 @@ const Similarity: NextPage = () => {
             <ImageList sx={{ width: "50%", height: "100%" }}>
               {similarImages.map((img: any) => (
                 <ImageListItem sx={{ width: "100%", height: 400 }} key={img.id}>
-                  <img
-                    srcSet={`${img.payload.img_path}?w=248&fit=crop&auto=format&dpr=3 1x`}
-                    src={`${img.payload.img_path}?w=248&fit=crop&auto=format`}
-                    alt={img.payload.img_path}
-                    loading="eager"
-                  />
+                  <Link
+                    href={`https://home.ss.ge/ka/udzravi-qoneba/${img.payload.application_id}`}
+                    target="_blank"
+                  >
+                    <img
+                      srcSet={`${img.payload.img_path}?w=248&fit=crop&auto=format&dpr=3 1x`}
+                      src={`${img.payload.img_path}?w=248&fit=crop&auto=format`}
+                      alt={img.payload.img_path}
+                      loading="eager"
+                    />
+                  </Link>
                   <ImageListItemBar
                     style={{ color: "white" }}
                     title={img.score}
