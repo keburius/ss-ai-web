@@ -7,6 +7,11 @@ export const DressUpContainer = styled("div")`
 
   display: grid;
   grid-template-columns: 50% 50%;
+
+  @media (max-width: 1023px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 export const FormSection = styled("div")`
   display: flex;
@@ -29,6 +34,10 @@ export const FormContainer = styled("div")`
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border-radius: 10px;
   padding: 20px;
+
+  @media (max-width: 1023px) {
+    width: 100%;
+  }
 `;
 
 export const InputsContainer = styled("div")`
@@ -61,7 +70,8 @@ export const ResultsContainer = styled("div")`
   grid-template-columns: repeat(3, 1fr);
 
   @media (max-width: 1023px) {
-    grid-template-columns: repeat(5, 1fr);
+    min-height: 100vh;
+    grid-template-columns: repeat(2, 1fr) !important;
   }
   @media (max-width: 1500px) {
     grid-template-columns: repeat(4, 1fr);
