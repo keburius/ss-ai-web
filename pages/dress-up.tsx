@@ -111,6 +111,7 @@ const DressUp = () => {
         <S.ResultsContainer>
           {similarImages?.map((product: any, i: any) => (
             <S.ImageBox
+              key={product?.product_url}
               target="_blank"
               href={product?.payload?.product_url}
               onMouseOver={() =>
