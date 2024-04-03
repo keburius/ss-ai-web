@@ -15,6 +15,7 @@ import {
 import { motion } from "framer-motion";
 import useIsMobile from "../hooks/useIsMobile";
 import Link from "next/link";
+import Image from "next/image";
 
 const Similarity: NextPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -92,14 +93,15 @@ const Similarity: NextPage = () => {
           style={{
             display: "flex",
             alignItems: "center",
+            flexDirection: isMobile ? "column" : "row",
             justifyContent: "space-between",
-            height: "calc(100vh - 20px)",
+            height: isMobile ? "100%" : "calc(100vh - 20px)",
           }}
         >
           <div
             className="similar-div"
             style={{
-              width: "50%",
+              width: isMobile ? "100%" : "50%",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -107,7 +109,7 @@ const Similarity: NextPage = () => {
           >
             <div
               style={{
-                width: isMobile ? "auto" : "500px",
+                width: isMobile ? "100%" : "500px",
                 flexDirection: "column",
                 display: "flex",
                 gap: "20px",
@@ -185,43 +187,60 @@ const Similarity: NextPage = () => {
                 Search
               </Button>
             </div>
-            <motion.img
-              animate={{
-                width: imgUrl?.length ? (isMobile ? "100%" : 250) : 0,
-              }}
-              style={{
-                marginTop: 50,
-                borderRadius: 20,
-              }}
-              src={imgUrl}
-              alt=""
-            />
+            {isMobile ? null : (
+              <motion.img
+                animate={{
+                  width: imgUrl?.length ? (isMobile ? "100%" : 250) : 0,
+                }}
+                style={{
+                  marginTop: 50,
+                  borderRadius: 20,
+                }}
+                src={imgUrl}
+                alt=""
+              />
+            )}
           </div>
-
-          {!isMobile && (
-            <ImageList sx={{ width: "50%", height: "100%" }}>
-              {similarImages.map((img: any) => (
-                <ImageListItem sx={{ width: "100%", height: 400 }} key={img.id}>
-                  <Link
-                    href={`https://home.ss.ge/ka/udzravi-qoneba/${img.payload.application_id}`}
-                    target="_blank"
-                  >
-                    <img
-                      srcSet={`${img.payload.img_path}?w=248&fit=crop&auto=format&dpr=3 1x`}
-                      src={`${img.payload.img_path}?w=248&fit=crop&auto=format`}
-                      alt={img.payload.img_path}
-                      loading="eager"
-                    />
-                  </Link>
-                  <ImageListItemBar
-                    style={{ color: "white" }}
-                    title={img.score}
-                    position="below"
+          <ImageList
+            sx={{ width: isMobile ? "100%" : "50%", height: "100%" }}
+            cols={isMobile ? 1 : 3}
+            rowHeight={400}
+          >
+            {similarImages.map((image: any) => (
+              <ImageListItem
+                key={image.id}
+                style={{
+                  width: "100%",
+                }}
+              >
+                <Link
+                  href={`https://home.ss.ge/ka/udzravi-qoneba/${image.payload.application_id}`}
+                  target="_blank"
+                  style={{
+                    width: "100%",
+                  }}
+                >
+                  <Image
+                    style={{
+                      width: "100%",
+                      height: "350px",
+                      objectFit: "cover",
+                    }}
+                    width={300}
+                    height={350}
+                    src={`${image.payload.img_path}?w=164&h=164&fit=crop&cover=format`}
+                    alt={image.payload.img_path}
+                    loading="lazy"
                   />
-                </ImageListItem>
-              ))}
-            </ImageList>
-          )}
+                </Link>
+                <ImageListItemBar
+                  style={{ color: "white" }}
+                  title={image.score}
+                  position="below"
+                />
+              </ImageListItem>
+            ))}
+          </ImageList>
         </div>
       </main>
     </div>
